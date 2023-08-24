@@ -16,6 +16,10 @@ public class EmailConsumer {
 
     @RabbitListener(queues = "${spring.rabbitmq.queue}")
     public void listen(@Payload EmailDTO emailDTO) {
+        convertToEmailModel(emailDTO);
+    }
+
+    private void convertToEmailModel(EmailDTO emailDTO) {
         EmailModel emailModel = new EmailModel();
         BeanUtils.copyProperties(emailDTO, emailModel);
         emailService.sendEmail(emailModel);
